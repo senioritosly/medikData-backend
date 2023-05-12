@@ -1,7 +1,7 @@
-import app from './app.js'
+import app from "./app"
 
 const main = async () => {
-    await app.listen(4000)
+    app.listen(4000)
 }
 
 main()

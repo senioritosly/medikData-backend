@@ -2,6 +2,8 @@ import './database.js'
 import cors from 'cors'
 import express from 'express'
 
+import routeAuth from './routes/auth.routes.js'
+
 const app = express()
 
 //settings
@@ -16,7 +18,6 @@ app.use(express.json())
 //routes
 
 app.use('/api/auth', routeAuth)
-
 
 // module.exports = app
 export default app

@@ -1,7 +1,9 @@
-import app from "./app"
+import app from "./app.js"
 
 const main = async () => {
-    app.listen(4000)
+    await app.listen(4000, () => {
+        console.log('server has started on port 4000');
+    });
 }
 
 main()

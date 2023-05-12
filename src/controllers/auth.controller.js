@@ -101,7 +101,14 @@ auth.getUser = async (req, res) => {
 
 auth.logOut = async (req, res) => {
     try {
-        const { error } = await supabase.auth.signOut()
+        const authorizationHeader = req.headers.authorization;
+
+        if (!authorizationHeader) {
+            return res.status(401).json({ error: 'Authorization header missing' });
+        }
+
+        const token = req.headers.authorization.split(' ')[1];
+        const { error } = await supabase.auth.signOut(token)
 
         return res.json({ message: 'Usuario deslogueado correctamente' })
     } catch (error) {

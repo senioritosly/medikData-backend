@@ -37,39 +37,76 @@ auth.signIn = async (req, res) => {
     try {
         const { data, error } = await supabase.auth.signInWithPassword({
             email: req.body.email,
-            password: req.body.password
-        })
+            password: req.body.password,
+        });
 
-        return res.json({ message: data })
+        if (error) {
+            console.log(error);
+            return res.status(401).json({ message: 'Invalid email or password' });
+        }
 
+        return res.json({ message: 'Login successful', data });
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({ message: 'Internal server error' });
+    }
+};
+
+// auth.getUserByEmail = async (req, res) => {
+//     try {
+//         const { data, error } = await supabase
+//             .from('profiles')
+//             .select('email')
+//             .eq('email', req.params.email)
+//             .single();
+
+//         if (error) {
+//             console.log(error);
+//             return res.status(500).json({ error: 'Error al obtener el usuario' });
+//         }
+
+//         if (!data) {
+//             return res.status(404).json({ error: 'Usuario no encontrado' });
+//         }
+
+//         return res.json({ user: data });
+//     } catch (error) {
+//         console.log(error);
+//         return res.status(500).json({ error: 'Error en el servidor' });
+//     }
+// };
+
+auth.getUser = async (req, res) => {
+    try {
+        const authorizationHeader = req.headers.authorization;
+
+        if (!authorizationHeader) {
+            return res.status(401).json({ error: 'Authorization header missing' });
+        }
+
+        const token = req.headers.authorization.split(' ')[1];
+        const { data: user, error } = await supabase.auth.getUser(token);
+
+        if (error) {
+            console.log(error);
+            return res.status(401).json({ error: 'Invalid token' });
+        }
+
+        return res.json({ user });
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({ error: 'Internal server error' });
+    }
+};
+
+auth.logOut = async (req, res) => {
+    try {
+        const { error } = await supabase.auth.signOut()
+
+        return res.json({ message: 'Usuario deslogueado correctamente' })
     } catch (error) {
         console.log(error)
     }
 }
-
-auth.getUserByEmail = async (req, res) => {
-    try {
-        const { data, error } = await supabase
-            .from('profiles')
-            .select('email')
-            .eq('email', req.params.email)
-            .single();
-
-        if (error) {
-            console.log(error);
-            return res.status(500).json({ error: 'Error al obtener el usuario' });
-        }
-
-        if (!data) {
-            return res.status(404).json({ error: 'Usuario no encontrado' });
-        }
-
-        return res.json({ user: data });
-    } catch (error) {
-        console.log(error);
-        return res.status(500).json({ error: 'Error en el servidor' });
-    }
-};
-
 
 export default auth

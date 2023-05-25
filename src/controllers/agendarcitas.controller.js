@@ -26,9 +26,12 @@ addCitas.getClinicas = async (req, res) => {
 
 addCitas.getEspecialidades = async (req, res) => {
     try {
+        console.log(req.body.id_clinica);
         const { data, error } = await supabase
-            .from('especialidades')
-            .select('*')
+            .from('clinica')
+            .select('medico( especialidad)')
+            .eq('id_clinica', req.body.id_clinica)
+
 
         if (error) {
             console.log(error);
@@ -67,6 +70,30 @@ addCitas.getMedico = async (req, res) => {
         return res.status(500).json({ error: 'Error en el servidor' });
     }
 };
+
+// auth.getUserByEmail = async (req, res) => {
+//     try {
+//         const { data, error } = await supabase
+//             .from('profiles')
+//             .select('email')
+//             .eq('email', req.params.email)
+//             .single();
+
+//         if (error) {
+//             console.log(error);
+//             return res.status(500).json({ error: 'Error al obtener el usuario' });
+//         }
+
+//         if (!data) {
+//             return res.status(404).json({ error: 'Usuario no encontrado' });
+//         }
+
+//         return res.json({ user: data });
+//     } catch (error) {
+//         console.log(error);
+//         return res.status(500).json({ error: 'Error en el servidor' });
+//     }
+// };
 
 
 

@@ -73,29 +73,7 @@ addCitas.getMedico = async (req, res) => {
     }
 };
 
-// auth.getUserByEmail = async (req, res) => {
-//     try {
-//         const { data, error } = await supabase
-//             .from('profiles')
-//             .select('email')
-//             .eq('email', req.params.email)
-//             .single();
 
-//         if (error) {
-//             console.log(error);
-//             return res.status(500).json({ error: 'Error al obtener el usuario' });
-//         }
-
-//         if (!data) {
-//             return res.status(404).json({ error: 'Usuario no encontrado' });
-//         }
-
-//         return res.json({ user: data });
-//     } catch (error) {
-//         console.log(error);
-//         return res.status(500).json({ error: 'Error en el servidor' });
-//     }
-// };
 
 
 

@@ -1,5 +1,5 @@
 import { Router } from "express"
-import addCitas from '../controllers/agendar-citas.controller.js'
+import addCitas from '../controllers/agendarcitas.controller.js'
 
 
 const router = Router()

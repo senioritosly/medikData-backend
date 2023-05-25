@@ -46,6 +46,27 @@ addCitas.getEspecialidades = async (req, res) => {
     }
 };
 
+addCitas.getMedico = async (req, res) => {
+    try {
+        const { data, error } = await supabase
+            .from('medico')
+            .select('*')
+
+        if (error) {
+            console.log(error);
+            return res.status(500).json({ error: 'Error al obtener las medicos' });
+        }
+
+        if (!data) {
+            return res.status(404).json({ error: 'No hay medicos' });
+        }
+
+        return res.json({ especialidades: data });
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({ error: 'Error en el servidor' });
+    }
+};
 
 
 export default addCitas

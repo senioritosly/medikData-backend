@@ -10,5 +10,8 @@ router.route('/clinicas')
 router.route('/especialidades')
     .get(addCitas.getEspecialidades)
 
+router.route('/medico')
+    .get(addCitas.getMedico)
+
 
 export default router

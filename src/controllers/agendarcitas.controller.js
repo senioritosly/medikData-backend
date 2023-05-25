@@ -17,7 +17,7 @@ addCitas.getClinicas = async (req, res) => {
             return res.status(404).json({ error: 'No hay clinicas' });
         }
 
-        return res.json({ user: data });
+        return res.json({ clinicas: data });
     } catch (error) {
         console.log(error);
         return res.status(500).json({ error: 'Error en el servidor' });
@@ -39,7 +39,7 @@ addCitas.getEspecialidades = async (req, res) => {
             return res.status(404).json({ error: 'No hay especialidades' });
         }
 
-        return res.json({ user: data });
+        return res.json({ especialidades: data });
     } catch (error) {
         console.log(error);
         return res.status(500).json({ error: 'Error en el servidor' });

@@ -24,14 +24,14 @@ addCitas.getClinicas = async (req, res) => {
     }
 };
 
+
 addCitas.getEspecialidades = async (req, res) => {
     try {
-        console.log(req.body.id_clinica);
+
         const { data, error } = await supabase
             .from('clinica')
             .select('medico( especialidad)')
             .eq('id_clinica', req.body.id_clinica)
-
 
         if (error) {
             console.log(error);
@@ -53,7 +53,9 @@ addCitas.getMedico = async (req, res) => {
     try {
         const { data, error } = await supabase
             .from('medico')
-            .select('*')
+            .select('nombres, apellidos')
+            .eq('especialidad', req.body.especialidad)
+
 
         if (error) {
             console.log(error);

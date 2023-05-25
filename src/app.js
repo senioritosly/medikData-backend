@@ -3,6 +3,7 @@ import cors from 'cors'
 import express from 'express'
 
 import routeAuth from './routes/auth.routes.js'
+import routeAddCitas from './routes/agendar-citas.routes.js'
 
 const app = express()
 
@@ -23,7 +24,11 @@ app.use((req, res, next) => {
 
 //routes
 
+// AUTH ROUTES
 app.use('/api/auth', routeAuth)
+
+// AGENDAR CITAS ROUTES
+app.use('/api/addcitas', routeAddCitas)
 
 // module.exports = app
 export default app

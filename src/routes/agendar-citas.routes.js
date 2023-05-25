@@ -7,6 +7,8 @@ const router = Router()
 router.route('/clinicas')
     .get(addCitas.getClinicas)
 
+router.route('/especialidades')
+    .get(addCitas.getEspecialidades)
 
 
 export default router

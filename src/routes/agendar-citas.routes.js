@@ -14,4 +14,6 @@ router.route('/medico')
     .get(addCitas.getMedico)
 
 
+
+
 export default router

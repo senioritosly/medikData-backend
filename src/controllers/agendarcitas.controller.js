@@ -61,12 +61,13 @@ addCitas.getMedico = async (req, res) => {
             return res.status(404).json({ error: 'No hay medicos' });
         }
 
-        return res.json({ especialidades: data });
+        return res.json({ medico: data });
     } catch (error) {
         console.log(error);
         return res.status(500).json({ error: 'Error en el servidor' });
     }
 };
+
 
 
 export default addCitas

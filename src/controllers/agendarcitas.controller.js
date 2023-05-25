@@ -31,7 +31,7 @@ addCitas.getEspecialidades = async (req, res) => {
         const { data, error } = await supabase
             .from('clinica')
             .select('medico( especialidad)')
-            .eq('id_clinica', req.body.id_clinica)
+            .eq('id_clinica', req.params.id_clinica)
 
         if (error) {
             console.log(error);
@@ -54,7 +54,8 @@ addCitas.getMedico = async (req, res) => {
         const { data, error } = await supabase
             .from('medico')
             .select('nombres, apellidos')
-            .eq('especialidad', req.body.especialidad)
+            .eq('especialidad', req.params.especialidad)
+            .eq('id_clinica', req.params.id_clinica)
 
 
         if (error) {
@@ -72,6 +73,8 @@ addCitas.getMedico = async (req, res) => {
         return res.status(500).json({ error: 'Error en el servidor' });
     }
 };
+
+
 
 
 

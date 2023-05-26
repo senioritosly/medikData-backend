@@ -74,11 +74,33 @@ addCitas.getMedico = async (req, res) => {
     }
 };
 
+addCitas.postCita = async (req, res) => {
+    try {
+        const { data, error } = await supabase
+            .from('cita')
+            .insert([
+                {
+                    pacientetoken: req.body.pacientetoken,
+                    medicotoken: req.body.medicotoken,
+                    clinicatoken: req.body.clinicatoken,
+                    hora: req.body.hora,
+                    fecha: req.body.fecha,
+                    estado: 'pendiente'
+                },
+            ])
+            .single()
 
+        if (error) {
+            console.log(error);
+            return res.status(500).json({ error: 'Error al agendar la cita' });
+        }
 
-
-
-
+        return res.json({ cita: data });
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({ error: 'Error en el servidor' });
+    }
+};
 
 
 export default addCitas

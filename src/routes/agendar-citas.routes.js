@@ -13,7 +13,7 @@ router.route('/especialidades/:id_clinica')
 router.route('/medico/:especialidad/:id_clinica')
     .get(addCitas.getMedico)
 
-
-
+router.route('/agendar-cita')
+    .post(addCitas.postCita)
 
 export default router

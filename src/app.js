@@ -5,7 +5,7 @@ import express from 'express'
 import routeAuth from './routes/auth.routes.js'
 import routeAddCitas from './routes/agendar-citas.routes.js'
 import routeCitas from './routes/citas.routes.js'
-
+import routeResenias from './routes/resenias.routes.js'
 const app = express()
 
 //settings
@@ -33,6 +33,9 @@ app.use('/api/addcitas', routeAddCitas)
 
 // CITAS ROUTES
 app.use('/api/citas', routeCitas)
+
+//RESEÑAS
+app.use('/api/resenias', routeResenias)
 
 // module.exports = app
 export default app

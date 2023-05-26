@@ -1,12 +1,9 @@
 import supabase from "../database.js";
 
 const reseniasConect = {}
-
 reseniasConect.getResenias = async (req, res) => {
     try {
-        const { data, error } = await supabase
-            .from('resenia')
-            .select('*')
+        const { data, error } = await supabase.from('resenias').select('*')
 
         if (error) {
             console.log(error);
@@ -23,5 +20,4 @@ reseniasConect.getResenias = async (req, res) => {
         return res.status(500).json({ error: 'Error en el servidor' });
     }
 }
-
 export default reseniasConect;

@@ -53,7 +53,7 @@ addCitas.getMedico = async (req, res) => {
     try {
         const { data, error } = await supabase
             .from('medico')
-            .select('nombres, apellidos')
+            .select('nombres, apellidos, dpi')
             .eq('especialidad', req.params.especialidad)
             .eq('id_clinica', req.params.id_clinica)
 

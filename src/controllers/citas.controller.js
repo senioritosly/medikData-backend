@@ -28,10 +28,10 @@ listadoCitas.getCitas = async (req, res) => {
 listadoCitas.getCitasPendientes = async (req, res) => {
     try {
         const { data, error } = await supabase
-        .from('cita')
-        .select('*')
-        .eq('pacientetoken', req.params.pacientetoken)
-        .eq('estado', 'pendiente');
+            .from('cita')
+            .select('paciente(nombres, apellidos), medico(nombres, apellidos), clinica(nombre), fecha, hora, estado')
+            .eq('pacientetoken', req.params.pacientetoken)
+            .eq('estado', 'pendiente');
 
 
         if (error) {

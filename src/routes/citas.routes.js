@@ -4,7 +4,7 @@ import listadoCitas from '../controllers/citas.controller.js'
 
 const router = Router()
 
-router.route('/citaspaciente/:dpi')
+router.route('/citaspaciente/:pacientetoken')
     .get(listadoCitas.getCitas)
 
 router.route('/citaspendientes/:pacientetoken')

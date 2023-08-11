@@ -1,12 +1,12 @@
 import supabase from "../database.js";
 
-const listadoClinicas = {};
+const clinicasController = {};
 
-listadoClinicas.getClincas = async (req, res) => {
+clinicasController.getClincas = async (req, res) => {
     try {
         const { data, error } = await supabase
             .from('clinica')
-            .select('nombre, direccion, telefono')
+            .select('id_clinica, dpi, direccion, telefono, nombre')
             .order('nombre');
 
         if (error) {
@@ -25,4 +25,39 @@ listadoClinicas.getClincas = async (req, res) => {
     }
 };
 
-export default listadoClinicas;
+clinicasController.crearClinica = async (req, res) => {
+    try {
+        const { data, error } = await supabase
+            .from('clinica')
+            .insert([
+                {
+                    dpi: req.body.dpi,
+                    direccion: req.body.direccion,
+                    telefono: req.body.telefono,
+                    nombre: req.body.nombre
+                }
+            ])
+            .single();
+
+        if (error) {
+            console.log(error);
+            return res.status(500).json({ error: 'Error al crear la clínica' });
+        }
+
+        return res.json({ clinica: data });
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({ error: 'Error en el servidor' });
+    }
+};
+
+// Agregar funciones de actualización y eliminación aquí si es necesario
+
+export default clinicasController;
+
+
+
+
+
+
+

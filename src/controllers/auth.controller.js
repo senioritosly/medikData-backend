@@ -19,7 +19,7 @@ auth.signUp = async (req, res) => {
                         genero: req.body.genero,
                         alergias: req.body.alergias,
                         complicaciones: req.body.complicaciones,
-                        profile_role: "paciente"
+                        profile_role: req.body.profile_role
                     },
                 },
             };
@@ -32,7 +32,7 @@ auth.signUp = async (req, res) => {
                     data: {
                         dpi: req.body.dpi,
                         full_name: req.body.full_name,
-                        profile_role: "clinica"
+                        profile_role: req.body.profile_role
                     },
                 },
             };

@@ -15,7 +15,8 @@ auth.signUp = async (req, res) => {
                     nacimiento: req.body.nacimiento,
                     genero: req.body.genero,
                     alergias: req.body.alergias,
-                    complicaciones: req.body.complicaciones
+                    complicaciones: req.body.complicaciones,
+                    profile_role: req.body.profile_role
                 },
             },
         })

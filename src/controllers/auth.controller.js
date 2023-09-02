@@ -32,6 +32,7 @@ auth.signUp = async (req, res) => {
                     data: {
                         dpi: req.body.dpi,
                         full_name: req.body.full_name,
+                        direccion: req.body.direccion,
                         profile_role: req.body.profile_role
                     },
                 },

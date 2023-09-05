@@ -37,7 +37,23 @@ auth.signUp = async (req, res) => {
                     },
                 },
             };
+        } else if (req.body.profile_role === "doctor"){
+            userData = {
+                email: req.body.email,
+                password: req.body.password,
+                phone: req.body.phone,
+                options: {
+                    data: {
+                        dpi: req.body.dpi,
+                        full_name: req.body.full_name,
+                        direccion: req.body.direccion,
+                        genero: req.body.genero,
+                        profile_role: req.body.profile_role
+                    },
+                },
+            };
         }
+
 
         const { data, error } = await supabase.auth.signUp(userData);
 

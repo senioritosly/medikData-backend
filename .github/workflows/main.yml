@@ -3,7 +3,7 @@ name: CI/CD para Backend
 on:
   push:
     branches:
-      - main
+      - CI/CD
 
 jobs:
   build:

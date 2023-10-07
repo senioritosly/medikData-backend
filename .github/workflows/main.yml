@@ -1,0 +1,36 @@
+name: CI/CD para Backend
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout del código fuente
+        uses: actions/checkout@v2
+
+      - name: Configurar Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '14'
+
+      - name: Instalar dependencias
+        run: npm install
+
+      - name: Ejecutar pruebas
+        run: npm test
+
+      - name: Despliegue del Backend
+        run: |
+          # Aquí colocarías los comandos para desplegar tu backend, por ejemplo:
+          # - Comando para reiniciar el servidor o aplicar cambios
+          # - Comando para reiniciar servicios relacionados con el backend
+          # Por ejemplo, supongamos que utilizas el comando "pm2" para gestionar tu aplicación Node.js:
+          pm2 restart nombre_de_la_aplicacion
+
+        
+

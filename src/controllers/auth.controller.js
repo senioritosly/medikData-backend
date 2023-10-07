@@ -4,21 +4,58 @@ const auth = {}
 
 auth.signUp = async (req, res) => {
     try {
-        const { data, error } = await supabase.auth.signUp({
-            email: req.body.email,
-            password: req.body.password,
-            phone: req.body.phone,
-            options: {
-                data: {
-                    dpi: req.body.dpi,
-                    full_name: req.body.full_name,
-                    nacimiento: req.body.nacimiento,
-                    genero: req.body.genero,
-                    alergias: req.body.alergias,
-                    complicaciones: req.body.complicaciones
+        let userData;
+
+        if (req.body.profile_role === "paciente") {
+            userData = {
+                email: req.body.email,
+                password: req.body.password,
+                phone: req.body.phone,
+                options: {
+                    data: {
+                        dpi: req.body.dpi,
+                        full_name: req.body.full_name,
+                        nacimiento: req.body.nacimiento,
+                        genero: req.body.genero,
+                        alergias: req.body.alergias,
+                        complicaciones: req.body.complicaciones,
+                        profile_role: req.body.profile_role
+                    },
                 },
-            },
-        })
+            };
+        } else if (req.body.profile_role === "clinica") {
+            userData = {
+                email: req.body.email,
+                password: req.body.password,
+                phone: req.body.phone,
+                options: {
+                    data: {
+                        dpi: req.body.dpi,
+                        full_name: req.body.full_name,
+                        direccion: req.body.direccion,
+                        profile_role: req.body.profile_role
+                    },
+                },
+            };
+        } else if (req.body.profile_role === "doctor"){
+            userData = {
+                email: req.body.email,
+                password: req.body.password,
+                phone: req.body.phone,
+                options: {
+                    data: {
+                        dpi: req.body.dpi,
+                        full_name: req.body.full_name,
+                        direccion: req.body.direccion,
+                        genero: req.body.genero,
+                        profile_role: req.body.profile_role
+                    },
+                },
+            };
+        }
+
+
+        const { data, error } = await supabase.auth.signUp(userData);
 
         if (error) {
             console.log(error);
@@ -27,11 +64,10 @@ auth.signUp = async (req, res) => {
 
         return res.json({ message: 'Usuario creado correctamente', data });
     } catch (error) {
-        console.log(error)
+        console.log(error);
+        return res.status(500).json({ message: 'Error creating user' });
     }
-
-    return res.json({ message: "Usuario creado correctamente" })
-}
+};
 
 auth.signIn = async (req, res) => {
     try {

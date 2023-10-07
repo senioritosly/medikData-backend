@@ -3,7 +3,7 @@ name: CI/CD para Backend
 on:
   push:
     branches:
-      - CI/CD
+      - main
 
 jobs:
   build:
@@ -30,7 +30,7 @@ jobs:
         run: yarn install
 
       - name: Ejecutar pruebas
-        run: yarn test
+        run: yarn mocha src/app.test.js
 
       - name: Despliegue del Backend
         run: |

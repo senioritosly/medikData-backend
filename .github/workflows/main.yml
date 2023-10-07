@@ -3,7 +3,7 @@ name: CI/CD para Backend
 on:
   push:
     branches:
-      - main
+      - CI/CD
 
 jobs:
   build:
@@ -22,14 +22,10 @@ jobs:
         run: yarn install # Usa 'yarn' en lugar de 'npm' para instalar dependencias
 
       - name: Ejecutar pruebas
-        run: yarn test # Usa 'yarn' en lugar de 'npm' para ejecutar las pruebas
+        run: yarn mocha src/app.test.js # Usa 'yarn' en lugar de 'npm' para ejecutar las pruebas
 
       - name: Despliegue del Backend
         run: |
-          # Aquí colocarías los comandos para desplegar tu backend, por ejemplo:
-          # - Comando para reiniciar el servidor o aplicar cambios
-          # - Comando para reiniciar servicios relacionados con el backend
-          # Por ejemplo, supongamos que utilizas el comando "pm2" para gestionar tu aplicación Node.js:
           pm2 restart app.js
 
 

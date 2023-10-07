@@ -13,5 +13,18 @@ describe('Tests for agendar-citas routes', () => {
             expect(res.body.clinicas).to.be.an('array');
         });
     });
+    
+    describe('GET /api/addcitas/especialidades/:id_clinica', () => {
+        it('should return a 200 status and an object with an array of especialidades', async () => {
+            const id_clinica = 1; // Aquí debes poner un id_clinica válido para tu prueba.
+            const res = await request(app).get(`/api/addcitas/especialidades/${id_clinica}`);
+
+            expect(res.statusCode).to.equal(200);
+            expect(res.body).to.be.an('object');
+            expect(res.body.especialidades).to.be.an('array');
+        });
+    });
+
+
 
 });

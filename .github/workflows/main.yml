@@ -19,10 +19,10 @@ jobs:
           node-version: '14' # Esta es la versión de Node para tu proyecto, no para la acción
 
       - name: Instalar dependencias
-        run: npm install
+        run: yarn install # Usa 'yarn' en lugar de 'npm' para instalar dependencias
 
       - name: Ejecutar pruebas
-        run: npm test
+        run: yarn test # Usa 'yarn' en lugar de 'npm' para ejecutar las pruebas
 
       - name: Despliegue del Backend
         run: |
@@ -31,6 +31,7 @@ jobs:
           # - Comando para reiniciar servicios relacionados con el backend
           # Por ejemplo, supongamos que utilizas el comando "pm2" para gestionar tu aplicación Node.js:
           pm2 restart app.js
+
 
         
 

@@ -24,11 +24,6 @@ jobs:
       - name: Ejecutar pruebas
         run: yarn mocha src/app.test.js
 
-      - name: Despliegue del Backend
-        run: |
-          pm2 restart app.js
-
-
 
         
 

@@ -22,7 +22,7 @@ jobs:
         run: yarn install # Usa 'yarn' en lugar de 'npm' para instalar dependencias
 
       - name: Ejecutar pruebas
-        run: yarn test # Usa 'yarn' en lugar de 'npm' para ejecutar las pruebas
+        run: yarn mocha src/app.test.js # Usa 'yarn' en lugar de 'npm' para ejecutar las pruebas
 
       - name: Despliegue del Backend
         run: |

@@ -11,12 +11,12 @@ jobs:
 
     steps:
       - name: Checkout del código fuente
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3 # Actualizado a v3
 
       - name: Configurar Node.js
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v3 # Actualizado a v3
         with:
-          node-version: '16'
+          node-version: '14' # Esta es la versión de Node para tu proyecto, no para la acción
 
       - name: Instalar dependencias
         run: npm install
@@ -30,7 +30,7 @@ jobs:
           # - Comando para reiniciar el servidor o aplicar cambios
           # - Comando para reiniciar servicios relacionados con el backend
           # Por ejemplo, supongamos que utilizas el comando "pm2" para gestionar tu aplicación Node.js:
-          pm2 restart nombre_de_la_aplicacion
+          pm2 restart app.js
 
         
 

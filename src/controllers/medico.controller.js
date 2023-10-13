@@ -57,4 +57,49 @@ medicosController.crearMedico = async (req, res) => {
     }
 };
 
+// Obtener la lista de médicos de la misma clínica del administrador
+medicosController.getMedicos = async (req, res) => {
+    try {
+        // Paso 1: Obtener el DPI del administrador
+        const dpiAdmin = req.params.dpiAdmin; // Asegúrate de pasar el DPI del administrador desde el frontend
+
+        // Paso 2: Obtener el id_clinica del administrador
+        const { data: adminData, error: adminError } = await supabase
+            .from('clinica')
+            .select('id_clinica')
+            .eq('dpi', dpiAdmin);
+
+        if (adminError) {
+            console.log(adminError);
+            return res.status(500).json({ error: 'Error al obtener el id_clinica del administrador' });
+        }
+
+        if (!adminData || adminData.length === 0) {
+            return res.status(404).json({ error: 'No se encontró la clínica del administrador' });
+        }
+
+        const idClinica = adminData[0].id_clinica;
+
+        // Paso 3: Obtener los médicos de la misma clínica
+        const { data, error } = await supabase
+            .from('medico')
+            .select('nombres, apellidos')
+            .eq('id_clinica', idClinica);
+
+        if (error) {
+            console.log(error);
+            return res.status(500).json({ error: 'Error al obtener la lista de médicos' });
+        }
+
+        if (!data || data.length === 0) {
+            return res.status(404).json({ error: 'No hay médicos registrados en esta clínica' });
+        }
+
+        return res.json({ medicos: data });
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({ error: 'Error en el servidor' });
+    }
+};
+
 export default medicosController;

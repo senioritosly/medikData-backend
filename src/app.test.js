@@ -37,4 +37,17 @@ describe('Tests for agendar-citas routes', () => {
         });
     });
 
+    describe('Tests for medico routes', () => {
+        describe('GET /api/medico/:dpi', () => {
+            it('should return a 200 status and an object with an array of medicos', async () => {
+                const dpi = '23441800101'; // DPI para probar
+                const res = await request(app).get(`/api/medico/${dpi}`);
+    
+                expect(res.statusCode).to.equal(200);
+                expect(res.body).to.be.an('object');
+                expect(res.body.medicos).to.be.an('array');
+            });
+        });
+    });
+
 });

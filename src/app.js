@@ -7,7 +7,7 @@ import routeAddCitas from './routes/agendar-citas.routes.js'
 import routeCitas from './routes/citas.routes.js'
 import routeResenias from './routes/resenias.routes.js'
 import routeClinicas from './routes/clinicas.routes.js'
-//import routeMedicos from './routes/medico.routes.js';
+import routeMedicos from './routes/medico.routes.js';
 
 const app = express()
 
@@ -44,7 +44,7 @@ app.use('/api/resenias', routeResenias)
 app.use('/api/clinica',routeClinicas)
 
 //MEDICOS
-//app.use('/api/medico',routeMedicos)
+app.use('/api/medico', routeMedicos)
 
 // module.exports = app
 export default app

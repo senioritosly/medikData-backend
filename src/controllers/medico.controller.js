@@ -58,16 +58,14 @@ medicosController.crearMedico = async (req, res) => {
 };
 
 // Obtener la lista de médicos de la misma clínica del administrador
-medicosController.getMedicos = async (req, res) => {
+medicosController.getMedicosClinicas = async (req, res) => {
     try {
-        // Paso 1: Obtener el DPI del administrador
-        const dpiAdmin = req.params.dpiAdmin; // Asegúrate de pasar el DPI del administrador desde el frontend
-
-        // Paso 2: Obtener el id_clinica del administrador
+        
+        console.log(req.params.dpi);
         const { data: adminData, error: adminError } = await supabase
             .from('clinica')
             .select('id_clinica')
-            .eq('dpi', dpiAdmin);
+            .eq('dpi', req.params.dpi);
 
         if (adminError) {
             console.log(adminError);

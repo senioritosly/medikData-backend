@@ -7,4 +7,7 @@ router.route('/')
     .get(medicosController.getMedicos)
     .post(medicosController.crearMedico);
 
+router.route('/:dpi')
+    .get(medicosController.getMedicosClinicas);
+
 export default router;

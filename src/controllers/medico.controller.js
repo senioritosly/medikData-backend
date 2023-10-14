@@ -57,4 +57,47 @@ medicosController.crearMedico = async (req, res) => {
     }
 };
 
+// Obtener la lista de médicos de la misma clínica del administrador
+medicosController.getMedicosClinicas = async (req, res) => {
+    try {
+        
+        console.log(req.params.dpi);
+        const { data: adminData, error: adminError } = await supabase
+            .from('clinica')
+            .select('id_clinica')
+            .eq('dpi', req.params.dpi);
+
+        if (adminError) {
+            console.log(adminError);
+            return res.status(500).json({ error: 'Error al obtener el id_clinica del administrador' });
+        }
+
+        if (!adminData || adminData.length === 0) {
+            return res.status(404).json({ error: 'No se encontró la clínica del administrador' });
+        }
+
+        const idClinica = adminData[0].id_clinica;
+
+        // Paso 3: Obtener los médicos de la misma clínica
+        const { data, error } = await supabase
+            .from('medico')
+            .select('nombres, apellidos')
+            .eq('id_clinica', idClinica);
+
+        if (error) {
+            console.log(error);
+            return res.status(500).json({ error: 'Error al obtener la lista de médicos' });
+        }
+
+        if (!data || data.length === 0) {
+            return res.status(404).json({ error: 'No hay médicos registrados en esta clínica' });
+        }
+
+        return res.json({ medicos: data });
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({ error: 'Error en el servidor' });
+    }
+};
+
 export default medicosController;

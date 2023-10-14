@@ -4,7 +4,8 @@ on:
   push:
     branches:
       - CI/CD
-
+      - controladorMedico
+      
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -18,24 +19,11 @@ jobs:
         with:
           node-version: '14' # Esta es la versión de Node para tu proyecto, no para la acción
 
-      - name: Configurar variables de entorno
-        env:
-          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
-          SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
-        run: |
-          echo "SUPABASE_URL=${SUPABASE_URL}" >> .env
-          echo "SUPABASE_KEY=${SUPABASE_KEY}" >> .env
-
       - name: Instalar dependencias
         run: yarn install
 
       - name: Ejecutar pruebas
         run: yarn mocha src/app.test.js
-
-      - name: Despliegue del Backend
-        run: |
-          pm2 restart app.js
-
 
 
         

@@ -45,10 +45,11 @@ auth.signUp = async (req, res) => {
                     data: {
                         dpi: req.body.dpi,
                         full_name: req.body.full_name,
-                        direccion: req.body.direccion,
-                        genero: req.body.genero,
                         profile_role: req.body.profile_role,
                         telefono: req.body.telefono,
+                        especialidad: req.body.especialidad,
+                        numerocolegiado: req.body.numerocolegiado,
+                        clinica_doc: req.body.clinica_doc,
                     },
                 },
             };

@@ -10,4 +10,7 @@ router.route('/')
 router.route('/:dpi')
     .get(medicosController.getMedicosClinicas);
 
+router.route('/horario/:dpi')
+    .get(medicosController.getHorarios);
+
 export default router;

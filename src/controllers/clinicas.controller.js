@@ -52,6 +52,29 @@ clinicasController.crearClinica = async (req, res) => {
 };
 
 // Agregar funciones de actualización y eliminación aquí si es necesario
+clinicasController.getClinicaID = async (req, res) => {
+    try {
+        const { data, error } = await supabase
+            .from('clinica')
+            .select('id_clinica')
+            .eq('dpi', req.params.dpi)
+            .single();
+
+        if (error) {
+            console.log(error);
+            return res.status(500).json({ error: 'Error al obtener la clínica' });
+        }
+
+        if (!data) {
+            return res.status(404).json({ error: 'No existe la clínica' });
+        }
+
+        return res.json({ clinica: data });
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({ error: 'Error en el servidor' });
+    }
+};
 
 export default clinicasController;
 

@@ -99,4 +99,27 @@ medicosController.getMedicosClinicas = async (req, res) => {
     }
 };
 
+medicosController.getHorarios = async (req, res) => {
+    try {
+        const { data, error } = await supabase
+            .from('disponibilidad')
+            .select('fecha, hora')
+            .eq('doctor_dpi', req.params.medicotoken);
+
+        if (error) {
+            console.log(error);
+            return res.status(500).json({ error: 'Error al obtener la lista de horarios' });
+        }
+        if (!data || data.length === 0) {
+            return res.status(404).json({ error: 'No hay horarios registrados' });
+        }
+
+        return res.json({ horarios: data });
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({ error: 'Error en el servidor'});
+    }
+    
+}
+
 export default medicosController;

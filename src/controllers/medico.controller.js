@@ -7,7 +7,7 @@ medicosController.getMedicos = async (req, res) => {
     try {
         const { data, error } = await supabase
             .from('medico')
-            .select('dpi, nombres, apellidos, especialidad, numerocolegiado, telefono, id_clinica, correo')
+            .select('dpi, full_name, especialidad, numerocolegiado, telefono, id_clinica, correo')
             .order('apellidos');
 
         if (error) {
@@ -34,8 +34,7 @@ medicosController.crearMedico = async (req, res) => {
             .insert([
                 {
                     dpi: req.body.dpi,
-                    nombres: req.body.nombres,
-                    apellidos: req.body.apellidos,
+                    full_name: req.body.full_name,
                     especialidad: req.body.especialidad,
                     numerocolegiado: req.body.numerocolegiado,
                     telefono: req.body.telefono,
@@ -81,7 +80,7 @@ medicosController.getMedicosClinicas = async (req, res) => {
         // Paso 3: Obtener los médicos de la misma clínica
         const { data, error } = await supabase
             .from('medico')
-            .select('nombres, apellidos')
+            .select('full_name')
             .eq('id_clinica', idClinica);
 
         if (error) {

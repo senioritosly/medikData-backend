@@ -10,7 +10,6 @@ auth.signUp = async (req, res) => {
             userData = {
                 email: req.body.email,
                 password: req.body.password,
-                telefono: req.body.telefono,
                 options: {
                     data: {
                         dpi: req.body.dpi,
@@ -19,7 +18,8 @@ auth.signUp = async (req, res) => {
                         genero: req.body.genero,
                         alergias: req.body.alergias,
                         complicaciones: req.body.complicaciones,
-                        profile_role: req.body.profile_role
+                        profile_role: req.body.profile_role,
+                        telefono: req.body.telefono,
                     },
                 },
             };
@@ -27,13 +27,13 @@ auth.signUp = async (req, res) => {
             userData = {
                 email: req.body.email,
                 password: req.body.password,
-                telefono: req.body.telefono,
                 options: {
                     data: {
                         dpi: req.body.dpi,
                         full_name: req.body.full_name,
                         direccion: req.body.direccion,
-                        profile_role: req.body.profile_role
+                        profile_role: req.body.profile_role,
+                        telefono: req.body.telefono,
                     },
                 },
             };
@@ -41,14 +41,14 @@ auth.signUp = async (req, res) => {
             userData = {
                 email: req.body.email,
                 password: req.body.password,
-                telefono: req.body.telefono,
                 options: {
                     data: {
                         dpi: req.body.dpi,
                         full_name: req.body.full_name,
                         direccion: req.body.direccion,
                         genero: req.body.genero,
-                        profile_role: req.body.profile_role
+                        profile_role: req.body.profile_role,
+                        telefono: req.body.telefono,
                     },
                 },
             };

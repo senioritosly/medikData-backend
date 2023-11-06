@@ -10,7 +10,7 @@ auth.signUp = async (req, res) => {
             userData = {
                 email: req.body.email,
                 password: req.body.password,
-                phone: req.body.phone,
+                telefono: req.body.telefono,
                 options: {
                     data: {
                         dpi: req.body.dpi,
@@ -27,7 +27,7 @@ auth.signUp = async (req, res) => {
             userData = {
                 email: req.body.email,
                 password: req.body.password,
-                phone: req.body.phone,
+                telefono: req.body.telefono,
                 options: {
                     data: {
                         dpi: req.body.dpi,
@@ -41,7 +41,7 @@ auth.signUp = async (req, res) => {
             userData = {
                 email: req.body.email,
                 password: req.body.password,
-                phone: req.body.phone,
+                telefono: req.body.telefono,
                 options: {
                     data: {
                         dpi: req.body.dpi,

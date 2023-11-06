@@ -59,7 +59,6 @@ medicosController.crearMedico = async (req, res) => {
 // Obtener la lista de médicos de la misma clínica del administrador
 medicosController.getMedicosClinicas = async (req, res) => {
     try {
-        
         console.log(req.params.dpi);
         const { data: adminData, error: adminError } = await supabase
             .from('clinica')
@@ -104,22 +103,25 @@ medicosController.getHorarios = async (req, res) => {
         const { data, error } = await supabase
             .from('disponibilidad')
             .select('fecha, hora')
-            .eq('doctor_dpi', req.params.medicotoken);
+            .eq('doctor_dpi', req.params.dpi)
+
+        console.log('DPI parameter:', req.params.dpi);
+        console.log('Data from Supabase:', data);
 
         if (error) {
             console.log(error);
             return res.status(500).json({ error: 'Error al obtener la lista de horarios' });
         }
-        if (!data || data.length === 0) {
+        if (!data) {
             return res.status(404).json({ error: 'No hay horarios registrados' });
         }
 
         return res.json({ horarios: data });
     } catch (error) {
         console.log(error);
-        return res.status(500).json({ error: 'Error en el servidor'});
+        return res.status(500).json({ error: 'Error en el servidor' });
     }
-    
-}
+
+};
 
 export default medicosController;

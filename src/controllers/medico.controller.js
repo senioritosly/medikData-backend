@@ -102,7 +102,7 @@ medicosController.getHorarios = async (req, res) => {
     try {
         const { data, error } = await supabase
             .from('disponibilidad')
-            .select('disponibilidad_id, fecha, hora')
+            .select('disponibilidad_id, fecha, hora, estado')
             .eq('doctor_dpi', req.params.dpi)
 
         console.log('DPI parameter:', req.params.dpi);

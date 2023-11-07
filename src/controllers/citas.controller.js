@@ -81,7 +81,7 @@ listadoCitas.deleteCita = async (req, res) => {
         const { data, error } = await supabase
             .from('cita')
             .delete()
-            .eq('citasid', req.params.idcita);
+            .eq('citasid', req.params.citaid);
 
         if (error) {
             console.log(error);

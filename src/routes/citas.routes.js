@@ -10,7 +10,7 @@ router.route('/citaspaciente/:pacientetoken')
 router.route('/citaspendientes/:pacientetoken')
     .get(listadoCitas.getCitasPendientes)
 
-
-
+router.route('/citaspendientesmedico/:medicotoken')
+    .get(listadoCitas.getCitasPendientesMedicos)
 
 export default router

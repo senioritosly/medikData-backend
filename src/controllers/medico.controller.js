@@ -124,4 +124,30 @@ medicosController.getHorarios = async (req, res) => {
 
 };
 
+medicosController.addAvailability = async (req, res) => {
+    try {
+        const { data, error } = await supabase
+            .from('disponibilidad')
+            .insert([
+                {
+                    fecha: req.body.fecha,
+                    hora: req.body.hora,
+                    estado: 'pendiente',
+                    doctor_dpi: req.body.doctor_dpi
+                }
+            ])
+            .single();
+
+        if (error) {
+            console.log(error);
+            return res.status(500).json({ error: 'Error al agregar la disponibilidad' });
+        }
+
+        return res.json({ disponibilidad: data });
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({ error: 'Error en el servidor' });
+    }
+}
+
 export default medicosController;

@@ -55,7 +55,7 @@ listadoCitas.getCitasPendientesMedicos = async (req, res) => {
     try {
         const { data, error } = await supabase
             .from('cita')
-            .select('paciente(full_name), medico(full_name), clinica(nombre), fecha, hora, estado')
+            .select('citasid, paciente(full_name), medico(full_name), clinica(nombre), fecha, hora, estado')
             .eq('medicotoken', req.params.medicotoken)
             .eq('estado', 'pendiente');
 
@@ -75,5 +75,28 @@ listadoCitas.getCitasPendientesMedicos = async (req, res) => {
         return res.status(500).json({ error: 'Error en el servidor' });
     }
 };
+
+listadoCitas.deleteCita = async (req, res) => {
+    try {
+        const { data, error } = await supabase
+            .from('cita')
+            .delete()
+            .eq('citasid', req.params.idcita);
+
+        if (error) {
+            console.log(error);
+            return res.status(500).json({ error: 'Error al eliminar la cita' });
+        }
+
+        if (!data) {
+            return res.status(404).json({ error: 'No hay citas' });
+        }
+
+        return res.json({ citas: data });
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({ error: 'Error en el servidor' });
+    }
+}
 
 export default listadoCitas

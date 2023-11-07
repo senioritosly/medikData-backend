@@ -13,4 +13,7 @@ router.route('/citaspendientes/:pacientetoken')
 router.route('/citaspendientesmedico/:medicotoken')
     .get(listadoCitas.getCitasPendientesMedicos)
 
+router.route('/anularcita/:idcita')
+    .post(listadoCitas.deleteCita)
+
 export default router

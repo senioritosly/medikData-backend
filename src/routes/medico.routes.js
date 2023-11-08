@@ -14,7 +14,7 @@ router.route('/horarios/addhorario')
     .post(medicosController.addAvailability);
 
 router.route('/diagnostico/:citaid')
-    .post(medicosController.updateDiagnostico);
+    .put(medicosController.updateDiagnostico);
 
 router.route('/:dpi')
     .get(medicosController.getMedicosClinicas);

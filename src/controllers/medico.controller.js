@@ -155,7 +155,7 @@ medicosController.updateDiagnostico = async (req, res) => {
         const { data, error } = await supabase
             .from('diagnostico')
             .update({ diagnostico: req.body.diagnostico })
-            .eq('citaid', req.params.citasid);
+            .eq('citaid', req.params.citaid);
 
         if (error) {
             console.log(error);

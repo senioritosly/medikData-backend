@@ -150,4 +150,23 @@ medicosController.addAvailability = async (req, res) => {
     }
 }
 
+medicosController.updateDiagnostico = async (req, res) => {
+    try {
+        const { data, error } = await supabase
+            .from('diagnostico')
+            .update({ diagnostico: req.body.diagnostico })
+            .eq('citaid', req.params.citasid);
+
+        if (error) {
+            console.log(error);
+            return res.status(500).json({ error: 'Error al actualizar el diagnóstico' });
+        }
+
+        return res.json({ diagnostico: data });
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({ error: 'Error en el servidor' })
+    }
+}
+
 export default medicosController;

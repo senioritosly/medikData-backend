@@ -13,7 +13,10 @@ router.route('/horarios/:dpi')
 router.route('/horarios/addhorario')
     .post(medicosController.addAvailability);
 
-    router.route('/:dpi')
+router.route('/diagnostico/:citaid')
+    .post(medicosController.updateDiagnostico);
+
+router.route('/:dpi')
     .get(medicosController.getMedicosClinicas);
 
 export default router;

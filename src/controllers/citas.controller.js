@@ -117,7 +117,7 @@ listadoCitas.getCitaDiagnostico = async (req, res) => {
             return res.status(404).json({ error: 'No hay diagnostico' });
         }
 
-        return res.json({ citas: data });
+        return res.json({ diagnostico: data });
     } catch (error) {
         console.log(error);
         return res.status(500).json({ error: 'Error en el servidor' });

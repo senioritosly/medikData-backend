@@ -101,6 +101,29 @@ listadoCitas.getCitasPendientesCitaID = async (req, res) => {
     }
 };
 
+listadoCitas.getCitaDiagnostico = async (req, res) => {
+    try {
+        const { data, error } = await supabase
+            .from('diagnostico')
+            .select('diagnostico')
+            .eq('citaid', req.params.citaid);
+
+        if (error) {
+            console.log(error);
+            return res.status(500).json({ error: 'Error al obtener el diagnostico' });
+        }
+
+        if (!data) {
+            return res.status(404).json({ error: 'No hay diagnostico' });
+        }
+
+        return res.json({ citas: data });
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({ error: 'Error en el servidor' });
+    }
+}
+
 listadoCitas.deleteCita = async (req, res) => {
     try {
         const { data, error } = await supabase

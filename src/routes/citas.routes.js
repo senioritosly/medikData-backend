@@ -16,6 +16,9 @@ router.route('/citaspendientesmedico/:medicotoken')
 router.route('/citaspendientescitaid/:citaid')
     .get(listadoCitas.getCitasPendientesCitaID)
 
+router.route('/citadiagnostico/:citaid')
+    .get(listadoCitas.getCitaDiagnostico)
+
 router.route('/anularcita/:citaid')
     .delete(listadoCitas.deleteCita)
 

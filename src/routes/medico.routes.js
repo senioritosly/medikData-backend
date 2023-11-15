@@ -11,7 +11,7 @@ router.route('/updatehorarios')
     .put(medicosController.updateDisponibilidad);
 
 router.route('/deletehorario')
-    .delete(medicosController.deleteDisponibilidad);
+    .put(medicosController.deleteDisponibilidad);
 
 router.route('/horarios/:dpi')
     .get(medicosController.getHorarios);

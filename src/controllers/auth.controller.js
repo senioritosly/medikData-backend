@@ -203,10 +203,10 @@ auth.updatePassword = async (req, res) => {
     try {
         const { email, newPassword } = req.body;
 
-        // Verificar si el usuario existe
+        // Verificar si el usuario existe en Supabase Auth
         const { data: user, error } = await supabase
             .from('profiles')
-            .select('*')
+            .select('id')
             .eq('email', email);
 
         if (error) {
@@ -218,8 +218,10 @@ auth.updatePassword = async (req, res) => {
             return res.status(404).json({ error: 'Usuario no encontrado' });
         }
 
-        // Actualizar la contraseña del usuario en Supabase Auth
-        const { data: updatedUser, updateError } = await supabase.auth.updateUser({
+        const userId = user[0].id; // Obtener el ID de usuario de Supabase Auth
+
+        // Actualizar la contraseña del usuario en Supabase Auth utilizando el ID de usuario
+        const { data: updatedUser, updateError } = await supabase.auth.updateUser(userId, {
             password: newPassword,
         });
 
@@ -234,6 +236,7 @@ auth.updatePassword = async (req, res) => {
         return res.status(500).json({ error: 'Error en el servidor' });
     }
 };
+
 
 
 // Método forgotPassword

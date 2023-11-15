@@ -235,9 +235,10 @@ listadoCitas.getCitasPorPacienteYMedico = async (req, res) => {
         // Obtener citas basadas en el DPI del paciente y el token del médico
         const { data: citasData, error: citasError } = await supabase
             .from('cita')
-            .select('*')
+            .select('citasid, paciente(full_name), medico(full_name), clinica(nombre), fecha, hora, estado')
             .eq('pacientetoken', pacientetoken)
-            .eq('medicotoken', medicotoken);
+            .eq('medicotoken', medicotoken)
+            .eq('estado', 'pendiente');
 
         if (citasError) {
             console.log(citasError);

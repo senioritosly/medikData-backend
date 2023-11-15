@@ -28,6 +28,10 @@ router.route('/clinicasasociadas/:pacientetoken')
 router.route('/medicosasociados/:clinicatoken/:pacientetoken')
     .get(listadoCitas.getDoctoresConCitasPendientes);
 
+//router.route('/citapendiente/:pacientetoken')
+  //  .get(listadoCitas.getCitaPendiente)
 
+router.route('/citacompledata/:citasid')
+    .get(listadoCitas.getCitaCompleta)
 
 export default router

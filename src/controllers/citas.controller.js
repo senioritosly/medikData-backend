@@ -1,4 +1,5 @@
 import supabase from "../database.js";
+import  crearPDF  from '../pdfGenerator.js';
 
 const listadoCitas = {}
 
@@ -165,7 +166,7 @@ listadoCitas.getClinicaDeCitaPendiente = async (req, res) => {
         }
 
         const clinicatokens = citasPendientes.map(cita => cita.clinicatoken);
-        
+
         const { data: clinicas, error: errorClinicas } = await supabase
             .from('clinica')
             .select('id_clinica, direccion, telefono, nombre')
@@ -223,6 +224,132 @@ listadoCitas.getDoctoresConCitasPendientes = async (req, res) => {
         return res.status(500).json({ error: 'Error en el servidor' });
     }
 };
+
+
+//listadoCitas.getCitaPendiente = async (req, res) => {
+//    try {
+//        const pacienteToken = req.params.pacientetoken;
+//
+//        // Paso 1: Obtener citas pendientes del paciente
+//        const { data: citasData, error: citasError } = await supabase
+//            .from('cita')
+//            .select('medicotoken, clinicatoken, fecha, hora, estado')
+//            .eq('pacientetoken', pacienteToken)
+//            .eq('estado', 'pendiente');
+//
+//        if (citasError) {
+//            console.log(citasError);
+//            return res.status(500).json({ error: 'Error al obtener citas pendientes' });
+//        }
+//
+//        if (!citasData || citasData.length === 0) {
+//            return res.status(404).json({ error: 'No se encontraron citas pendientes' });
+//        }
+//
+//        // Paso 2: Obtener información de médicos y clínicas
+//        let citasDetalladas = [];
+//        for (const cita of citasData) {
+//            const { data: medicoData, error: medicoError } = await supabase
+//                .from('medico')
+//                .select('full_name')
+//                .eq('dpi', cita.medicotoken);
+//
+//            const { data: clinicaData, error: clinicaError } = await supabase
+//                .from('clinica')
+//                .select('nombre')
+//                .eq('id_clinica', cita.clinicatoken);
+//
+//            if (medicoError || clinicaError) {
+//                continue; // Continuar con la siguiente cita en caso de error
+//            }
+//
+//            if (medicoData && clinicaData) {
+//                citasDetalladas.push({
+//                    medico: medicoData[0].full_name,
+//                    clinica: clinicaData[0].nombre,
+//                    fecha: cita.fecha,
+//                    hora: cita.hora,
+//                    estado: cita.estado
+//                });
+//            }
+//        }
+//
+//        return res.json({ citasPendientes: citasDetalladas });
+//    } catch (error) {
+//        console.log(error);
+//        return res.status(500).json({ error: 'Error en el servidor' });
+//    }
+//};
+
+listadoCitas.getCitaCompleta = async (req, res) => {
+    try {
+        // Obtener información de la cita
+        const { citasid } = req.params;
+        const { data: citaData, error: citaError } = await supabase
+            .from('cita')
+            .select('*')
+            .eq('citasid', citasid)
+            .single();
+
+        if (citaError || !citaData) {
+            console.log(citaError);
+            return res.status(404).json({ error: 'Cita no encontrada' });
+        }
+
+        if (citaData.estado !== 'realizada') {
+            return res.status(400).json({ error: 'La cita no está realizada' });
+        }
+
+        // Obtener información del paciente
+        const { data: pacienteData, error: pacienteError } = await supabase
+            .from('paciente')
+            .select('*')
+            .eq('dpi', citaData.pacientetoken)
+            .single();
+
+        // Obtener información del médico
+        const { data: medicoData, error: medicoError } = await supabase
+            .from('medico')
+            .select('full_name, especialidad, numerocolegiado, telefono, correo')
+            .eq('dpi', citaData.medicotoken)
+            .single();
+
+        // Obtener información de la clínica
+        const { data: clinicaData, error: clinicaError } = await supabase
+            .from('clinica')
+            .select('direccion, telefono, nombre')
+            .eq('id_clinica', citaData.clinicatoken)
+            .single();
+
+        // Obtener diagnóstico
+        const { data: diagnosticoData, error: diagnosticoError } = await supabase
+            .from('diagnostico')
+            .select('*')
+            .eq('citaid', citasid)
+            .single();
+
+
+        // Compilar toda la información
+        const pdfStream = crearPDF({
+            cita: citaData,
+            paciente: pacienteData,
+            medico: medicoData,
+            clinica: clinicaData,
+            diagnostico: diagnosticoData
+        });
+
+        // Establecer el tipo de contenido de la respuesta
+        res.setHeader('Content-Type', 'application/pdf');
+
+        // Enviar el stream del PDF como respuesta
+        pdfStream.pipe(res);
+        pdfStream.end();
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({ error: 'Error en el servidor' });
+    }
+};
+
 
 
 

@@ -169,4 +169,44 @@ medicosController.updateDiagnostico = async (req, res) => {
     }
 }
 
+medicosController.updateDisponibilidad = async (req, res) => {
+    try {
+        const { data, error } = await supabase
+            .from('disponibilidad')
+            .update({ fecha: req.body.fecha, hora: req.body.hora })
+            .eq('disponibilidad_id', req.body.disponibilidad_id)
+            .eq('doctor_dpi', req.body.doctor_dpi);
+
+        if (error) {
+            console.log(error);
+            return res.status(500).json({ error: 'Error al actualizar la disponibilidad' });
+        }
+
+        return res.json({ disponibilidad: data });
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({ error: 'Error en el servidor' })
+    }
+}
+
+medicosController.deleteDisponibilidad = async (req, res) => {
+    try {
+        const { data, error } = await supabase
+            .from('disponibilidad')
+            .delete()
+            .eq('disponibilidad_id', req.body.disponibilidad_id)
+            .eq('doctor_dpi', req.body.doctor_dpi);
+
+        if (error) {
+            console.log(error);
+            return res.status(500).json({ error: 'Error al eliminar la disponibilidad' });
+        }
+
+        return res.json({ disponibilidad: data });
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({ error: 'Error en el servidor' })
+    }
+}
+
 export default medicosController;

@@ -37,4 +37,23 @@ describe('Tests for agendar-citas routes', () => {
         });
     });
 
+    describe('GET /api/clinicasasociadas/:pacientetoken', () => {
+        it('should return a 200 status and an object with clinic information if patient has pending appointments', async () => {
+            const pacientetoken = '3021185000101'; // Utiliza el pacientetoken específico proporcionado
+    
+            const res = await request(app).get(`/api/addcitas/clinicas-pendientes/${pacientetoken}`);
+    
+            expect(res.statusCode).to.equal(200);
+            expect(res.body).to.be.an('object');
+            // Verifica la estructura o contenido de la respuesta según lo esperado
+            // Esperas recibir información de la clínica relacionada con citas pendientes del paciente.
+            expect(res.body.clinicas).to.be.an('array');
+            // Asegúrate de que la respuesta contenga la información de la clínica esperada
+            // (nombre, dirección, teléfono, etc.)
+        });
+    
+        // Puedes agregar más casos de prueba para manejar diferentes escenarios (sin citas pendientes, pacientetoken no existente, etc.)
+    });
+    
+
 });

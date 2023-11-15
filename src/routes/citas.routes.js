@@ -25,8 +25,8 @@ router.route('/anularcita/:citaid')
 router.route('/clinicasasociadas/:pacientetoken')
     .get(listadoCitas.getClinicaDeCitaPendiente)
 
-router.route('/medicosasociados/:clinicatoken')
-    .get(listadoCitas.getDoctoresConCitasPendientes)
+router.route('/doctores-citas-pendientes/:clinicatoken/:pacientetoken')
+    .get(listadoCitas.getDoctoresConCitasPendientes);
 
 
 

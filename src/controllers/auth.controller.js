@@ -8,7 +8,7 @@ function generateResetToken() {
     return crypto.randomBytes(20).toString('hex');
 }
 
-//hola
+
 //// Configurar el transporte de Nodemailer
 //const transporter = nodemailer.createTransport({
 //    host: 'smtp.ethereal.email',

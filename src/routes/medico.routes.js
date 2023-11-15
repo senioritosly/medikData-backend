@@ -25,4 +25,7 @@ router.route('/diagnostico/:citaid')
 router.route('/:dpi')
     .get(medicosController.getMedicosClinicas);
 
+router.route('/getpacientesmedico/:dpi')
+    .get(medicosController.getPacientesMedico);
+
 export default router;

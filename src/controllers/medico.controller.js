@@ -209,4 +209,47 @@ medicosController.deleteDisponibilidad = async (req, res) => {
     }
 }
 
+medicosController.getPacientesMedico = async (req, res) => {
+    try {
+        const medicoDpi = req.params.dpi;
+
+        // Paso 1: Obtener los tokens de los pacientes de las citas del médico
+        const { data: citasData, error: citasError } = await supabase
+            .from('cita')
+            .select('pacientetoken')
+            .eq('medicotoken', medicoDpi);
+
+        if (citasError) {
+            console.log(citasError);
+            return res.status(500).json({ error: 'Error al obtener las citas del médico' });
+        }
+
+        if (!citasData || citasData.length === 0) {
+            return res.status(404).json({ error: 'No se encontraron citas para este médico' });
+        }
+
+        // Paso 2: Obtener información de los pacientes
+        const pacientesTokens = citasData.map(cita => cita.pacientetoken);
+        const { data: pacientesData, error: pacientesError } = await supabase
+            .from('paciente')
+            .select('*')
+            .in('dpi', pacientesTokens);
+
+        if (pacientesError) {
+            console.log(pacientesError);
+            return res.status(500).json({ error: 'Error al obtener información de los pacientes' });
+        }
+
+        if (!pacientesData || pacientesData.length === 0) {
+            return res.status(404).json({ error: 'No se encontraron pacientes para este médico' });
+        }
+
+        return res.json({ pacientes: pacientesData });
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({ error: 'Error en el servidor' });
+    }
+};
+
+
 export default medicosController;

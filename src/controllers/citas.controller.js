@@ -147,7 +147,7 @@ listadoCitas.deleteCita = async (req, res) => {
     }
 }
 
-citaController.getClinicaDeCitaPendiente = async (req, res) => {
+listadoCitas.getClinicaDeCitaPendiente = async (req, res) => {
     try {
         const { data: citasPendientes, error: errorCitas } = await supabase
             .from('cita')

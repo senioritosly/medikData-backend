@@ -10,6 +10,9 @@ router.route('/')
 router.route('/updatehorarios')
     .put(medicosController.updateDisponibilidad);
 
+router.route('/deletehorario')
+    .delete(medicosController.deleteDisponibilidad);
+
 router.route('/horarios/:dpi')
     .get(medicosController.getHorarios);
 

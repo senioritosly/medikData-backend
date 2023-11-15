@@ -22,4 +22,8 @@ router.route('/citadiagnostico/:citaid')
 router.route('/anularcita/:citaid')
     .delete(listadoCitas.deleteCita)
 
+router.route('/clinicasasociadas/:pacientetoken')
+    .get(listadoCitas.getClinicaDeCitaPendiente)
+
+
 export default router

@@ -226,6 +226,38 @@ listadoCitas.getDoctoresConCitasPendientes = async (req, res) => {
 };
 
 
+
+listadoCitas.getCitasPorPacienteYMedico = async (req, res) => {
+    try {
+        const pacientetoken = req.params.pacientetoken;
+        const medicotoken = req.params.medicotoken;
+
+        // Obtener citas basadas en el DPI del paciente y el token del médico
+        const { data: citasData, error: citasError } = await supabase
+            .from('cita')
+            .select('*')
+            .eq('pacientetoken', pacientetoken)
+            .eq('medicotoken', medicotoken);
+
+        if (citasError) {
+            console.log(citasError);
+            return res.status(500).json({ error: 'Error al obtener citas' });
+        }
+
+        if (!citasData || citasData.length === 0) {
+            return res.status(404).json({ error: 'No se encontraron citas con los criterios especificados' });
+        }
+
+        // Opcional: Obtener información adicional de médicos y clínicas si es necesario
+        // ...
+
+        return res.json({ citas: citasData });
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({ error: 'Error en el servidor' });
+    }
+};
+
 //listadoCitas.getCitaPendiente = async (req, res) => {
 //    try {
 //        const pacienteToken = req.params.pacientetoken;

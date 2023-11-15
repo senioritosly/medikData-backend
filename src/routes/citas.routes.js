@@ -34,4 +34,6 @@ router.route('/medicosasociados/:clinicatoken/:pacientetoken')
 router.route('/citacompledata/:citasid')
     .get(listadoCitas.getCitaCompleta)
 
+    router.route('/citasPorPacienteYMedico/:pacientetoken/:medicotoken')
+    .get(listadoCitas.getCitasPorPacienteYMedico)
 export default router

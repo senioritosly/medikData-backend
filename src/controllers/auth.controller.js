@@ -1,7 +1,22 @@
 import supabase from "../database.js";
+import nodemailer from 'nodemailer';
+import crypto from 'crypto';
 
-const auth = {}
+const auth = {};
 
+function generateResetToken() {
+    return crypto.randomBytes(20).toString('hex');
+}
+
+// Configurar el transporte de Nodemailer
+const transporter = nodemailer.createTransport({
+    host: 'smtp.ethereal.email',
+    port: 587,
+    auth: {
+        user: 'jamel.kunde@ethereal.email',
+        pass: 'CE2rYGfbAkuFKSqXys'
+    }
+});
 
 auth.signUp = async (req, res) => {
     try {
@@ -116,29 +131,32 @@ auth.signIn = async (req, res) => {
     }
 };
 
-// auth.getUserByEmail = async (req, res) => {
-//     try {
-//         const { data, error } = await supabase
-//             .from('profiles')
-//             .select('email')
-//             .eq('email', req.params.email)
-//             .single();
+auth.getUserByEmail = async (req, res) => {
+    try {
+        const email = req.params.email; // Asegúrate de que estás extrayendo correctamente el email de los parámetros
 
-//         if (error) {
-//             console.log(error);
-//             return res.status(500).json({ error: 'Error al obtener el usuario' });
-//         }
+        // Verificar si el usuario existe
+        const { data: user, error } = await supabase
+            .from('profiles') // Asegúrate de que sea el nombre correcto de la tabla
+            .select('*')
+            .eq('email', email);
 
-//         if (!data) {
-//             return res.status(404).json({ error: 'Usuario no encontrado' });
-//         }
+        if (error) {
+            console.log(error);
+            return res.status(500).json({ error: 'Error al obtener el usuario' });
+        }
 
-//         return res.json({ user: data });
-//     } catch (error) {
-//         console.log(error);
-//         return res.status(500).json({ error: 'Error en el servidor' });
-//     }
-// };
+        if (user.length === 0) {
+            return res.status(404).json({ error: 'Usuario no encontrado' });
+        }
+
+        return res.json({ user: user[0] }); // Devuelve el primer usuario encontrado
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({ error: 'Error en el servidor' });
+    }
+};
+
 
 auth.getUser = async (req, res) => {
     try {
@@ -178,6 +196,9 @@ auth.logOut = async (req, res) => {
     } catch (error) {
         console.log(error)
     }
-}
+};
+
+// Método forgotPassword
+
 
 export default auth

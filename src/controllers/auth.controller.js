@@ -2,9 +2,36 @@ import supabase from "../database.js";
 
 const auth = {}
 
+
 auth.signUp = async (req, res) => {
     try {
         let userData;
+        const { email, dpi } = req.body;
+
+        // Verificar si ya existe un usuario con el mismo correo electrónico
+        const { data: existingEmailUser, error: emailError } = await supabase
+            .from('profiles')
+            .select('*')
+            .eq('email', email);
+
+        // Verificar si ya existe un usuario con el mismo DPI
+        const { data: existingDpiUser, error: dpiError } = await supabase
+            .from('profiles')
+            .select('*')
+            .eq('dpi', dpi);
+
+        if (emailError || dpiError) {
+            console.log(emailError || dpiError);
+            return res.status(500).json({ message: 'Error checking existing user' });
+        }
+
+        if (existingEmailUser.length > 0 && existingDpiUser.length > 0) {
+            return res.status(409).json({ message: 'Both email and DPI already exist' });
+        } else if (existingEmailUser.length > 0) {
+            return res.status(409).json({ message: 'Email already exists' });
+        } else if (existingDpiUser.length > 0) {
+            return res.status(409).json({ message: 'DPI already exists' });
+        }
 
         if (req.body.profile_role === "paciente") {
             userData = {
@@ -54,8 +81,6 @@ auth.signUp = async (req, res) => {
                 },
             };
         }
-
-
         const { data, error } = await supabase.auth.signUp(userData);
 
         if (error) {
@@ -64,11 +89,13 @@ auth.signUp = async (req, res) => {
         }
 
         return res.json({ message: 'Usuario creado correctamente', data });
+
     } catch (error) {
         console.log(error);
         return res.status(500).json({ message: 'Error creating user' });
     }
 };
+
 
 auth.signIn = async (req, res) => {
     try {

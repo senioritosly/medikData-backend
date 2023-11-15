@@ -7,6 +7,9 @@ router.route('/')
     .get(medicosController.getMedicos)
     .post(medicosController.crearMedico);
 
+router.route('/updatehorarios')
+    .put(medicosController.updateDisponibilidad);
+
 router.route('/horarios/:dpi')
     .get(medicosController.getHorarios);
 

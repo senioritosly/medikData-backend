@@ -208,9 +208,9 @@ listadoCitas.getDoctoresConCitasPendientes = async (req, res) => {
 
         // Obtener información de los doctores con medicotoken obtenidos
         const { data: doctores, error: errorDoctores } = await supabase
-            .from('doctores')
-            .select('nombre', 'especialidad')
-            .in('medicotoken', medicotokens);
+            .from('medico')
+            .select('full_name, especialidad, telefono')
+            .in('dpi', medicotokens);
 
         if (errorDoctores) {
             console.log(errorDoctores);

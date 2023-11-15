@@ -63,6 +63,9 @@ auth.signUp = async (req, res) => {
                         complicaciones: req.body.complicaciones,
                         profile_role: req.body.profile_role,
                         telefono: req.body.telefono,
+                        altura: req.body.altura,
+                        peso: req.body.peso,
+                        tipo_sangre: req.body.tipo_sangre,
                     },
                 },
             };

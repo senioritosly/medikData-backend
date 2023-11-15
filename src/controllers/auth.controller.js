@@ -221,8 +221,10 @@ auth.updatePassword = async (req, res) => {
         const userId = user[0].id; // Obtener el ID de usuario de Supabase Auth
 
         // Actualizar la contraseña del usuario en Supabase Auth utilizando el ID de usuario
-        const { data: updatedUser, updateError } = await supabase.auth.updateUser(userId, {
+        const { data: updatedUser, updateError } = await supabase.auth.updateUser({
+            email: email,
             password: newPassword,
+            data: {} // Puedes proporcionar datos adicionales aquí si es necesario
         });
 
         if (updateError) {
@@ -236,7 +238,6 @@ auth.updatePassword = async (req, res) => {
         return res.status(500).json({ error: 'Error en el servidor' });
     }
 };
-
 
 
 // Método forgotPassword

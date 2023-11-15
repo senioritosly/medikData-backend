@@ -25,7 +25,7 @@ router.route('/recover')
     .post(auth.forgotPassword)
 
 router.route('/reset')
-    .put(auth.updatePassword)
+    .post(auth.updatePassword)
 
 
 export default router

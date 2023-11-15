@@ -18,12 +18,14 @@ router.route('/user')
 router.route('/logout')
     .post(auth.logOut)
 
-router.route('/update-password')
-    .post(auth.updatePassword)
-//router.route('/forgot-password')
-//    .post(auth.forgotPassword)
+router.route( '/updateprofile/:dpi/:fullname' )
+    .put( auth.updateUser )
 
-//router.route('/reset-password')
-//    .post(auth.resetPassword)
+router.route('/recover')
+    .post(auth.forgotPassword)
+
+router.route('/reset')
+    .put(auth.updatePassword)
+
 
 export default router

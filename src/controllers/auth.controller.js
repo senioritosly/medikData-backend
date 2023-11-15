@@ -199,134 +199,100 @@ auth.logOut = async (req, res) => {
     }
 };
 
-auth.updatePassword = async (req, res) => {
+auth.updateUser= async (req, res) => {
     try {
-        const { email, newPassword } = req.body;
-
-        // Verificar si el usuario existe en Supabase Auth
-        const { data: user, error } = await supabase
+        const userId = req.params.dpi; // DPI del usuario
+        const newFullName = req.params.fullname; // Nuevo nombre completo
+        // Primero, verifica si el usuario con ese DPI existe
+        const { data: userData, error: userError } = await supabase
             .from('profiles')
-            .select('id')
-            .eq('email', email);
-
-        if (error) {
-            console.log(error);
-            return res.status(500).json({ error: 'Error al obtener el usuario' });
+            .select('*')
+            .eq('dpi', userId)
+            .single();
+        if (userError) {
+            throw userError;
         }
-
-        if (user.length === 0) {
+        if (!userData) {
             return res.status(404).json({ error: 'Usuario no encontrado' });
         }
-
-        const userId = user[0].id; // Obtener el ID de usuario de Supabase Auth
-
-        // Actualizar la contraseña del usuario en Supabase Auth utilizando el ID de usuario
-        const { data: updatedUser, updateError } = await supabase.auth.updateUser({
-            email: email,
-            password: newPassword,
-            data: {} // Puedes proporcionar datos adicionales aquí si es necesario
-        });
-
+        // Si el usuario existe, actualiza su perfil
+        const { error: updateError } = await supabase
+            .from('profiles')
+            .update({ full_name: newFullName })
+            .eq('dpi', userId);
         if (updateError) {
-            console.log(updateError);
-            return res.status(500).json({ error: 'Error al actualizar la contraseña' });
+            throw updateError;
+        }
+        // Respuesta exitosa
+        res.json({ message: 'Perfil actualizado correctamente' });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Error al procesar la solicitud' });
+    }
+}
+
+auth.forgotPassword = async (req, res) => {
+    try {
+        const { email } = req.body;
+
+        // Validar si el email tiene un formato correcto
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(email)) {
+            return res.status(400).json({ message: 'Invalid email format' });
         }
 
-        return res.json({ message: 'Contraseña actualizada correctamente' });
+        // Verificar si el usuario existe en la tabla 'profiles'
+        const { data: userProfile, error: profileError } = await supabase
+            .from('profiles')
+            .select('*')
+            .eq('email', email)
+            .single();
+
+        if (profileError || !userProfile) {
+            console.error("User not found:", profileError);
+            return res.status(404).json({ message: 'User not found' });
+        }
+
+        // Solicitar a Supabase que envíe el correo de restablecimiento de contraseña
+        let { data, error } = await supabase.auth.resetPasswordForEmail(email)
+
+        if (error) {
+            console.error("Error sending reset password email:", error);
+            return res.status(500).json({ message: 'Error sending reset password email' });
+        }
+
+        return res.json({ message: 'Reset password email sent' });
     } catch (error) {
-        console.log(error);
-        return res.status(500).json({ error: 'Error en el servidor' });
+        console.error("Internal server error:", error);
+        return res.status(500).json({ message: 'Internal server error' });
     }
 };
 
+auth.updatePassword = async (req, res) => {
+    try {
+        const { accessToken, newPassword } = req.body;
 
-// Método forgotPassword
+        // Asegúrate de que la nueva contraseña no esté vacía
+        if (!newPassword) {
+            return res.status(400).json({ message: 'New password is required' });
+        }
 
-//auth.forgotPassword= async (req, res) => {
-//    try {
-//        const { email } = req.body;
-//        // Verificar si el usuario existe
-//        const { data: user, error: userError } = await supabase
-//            .from('auth.users') // Asegúrate de que sea la tabla correcta
-//            .select('*')
-//            .eq('email', email)
-//            //.single();
-//
-//        if (userError || !user) {
-//            return res.status(404).json({ message: 'User not found' });
-//        }
-//
-//        // Generar token y fecha de caducidad
-//        const token = generateResetToken();
-//        const expiryDate = new Date();
-//        expiryDate.setHours(expiryDate.getHours() + 1); // Token válido por 1 hora
-//
-//        // Guardar el token y la fecha de caducidad en la base de datos
-//        const { error: updateError } = await supabase
-//            .from('users')
-//            .update({ email_change_token_new: token, email_change_sent_at: expiryDate })
-//            .eq('email', email);
-//
-//        if (updateError) {
-//            return res.status(500).json({ message: 'Error updating user data' });
-//        }
-//        // URL de restablecimiento de contraseña (ajustar según tu front-end)
-//        const resetUrl = `http://frontend.example.com/reset-password?token=${token}`;
-//        // Configurar y enviar el correo electrónico
-//        const mailOptions = {
-//            from: 'noreply@example.com',
-//            to: email,
-//            subject: 'Password Reset',
-//            text: `Please use the following link to reset your password: ${resetUrl}`,
-//            html: `<p>Please use the following link to reset your password: <a href="${resetUrl}">${resetUrl}</a></p>`
-//        };
-//        // Enviar el correo electrónico
-//        const info = await transporter.sendMail(mailOptions);
-//        console.log("Preview URL: %s", nodemailer.getTestMessageUrl(info)); // URL para ver el correo electrónico en Ethereal
-//        return res.json({ message: 'Reset password email sent' });
-//    } catch (error) {
-//        console.log(error);
-//        return res.status(500).json({ message: 'Internal server error' });
-//    }
-//};
-//
-//// Método resetPassword
-//auth.resetPassword = async (req, res) => {
-//    try {
-//        const { token, newPassword } = req.body;
-//
-//        // Verificar el token y la fecha de caducidad
-//        const { data: user, error: userError } = await supabase
-//            .from('profiles')
-//            .select('*')
-//            .eq('reset_token', token)
-//            .single();
-//
-//        if (userError || !user) {
-//            return res.status(404).json({ message: 'Invalid or expired token' });
-//        }
-//
-//        const tokenExpiry = user.reset_token_expiry;
-//        if (!tokenExpiry || new Date() > new Date(tokenExpiry)) {
-//            return res.status(400).json({ message: 'Token has expired' });
-//        }
-//
-//        // Cambiar la contraseña del usuario (Asegúrate de encriptar la nueva contraseña)
-//        const { error: passwordError } = await supabase
-//            .from('profiles')
-//            .update({ password: newPassword /* Aquí debes encriptar la contraseña */, reset_token: null, reset_token_expiry: null })
-//            .eq('id', user.id);
-//
-//        if (passwordError) {
-//            return res.status(500).json({ message: 'Error updating password' });
-//        }
-//
-//        return res.json({ message: 'Password reset successfully' });
-//    } catch (error) {
-//        console.log(error);
-//        return res.status(500).json({ message: 'Internal server error' });
-//    }
-//};
-//
+        // Actualizar la contraseña del usuario
+        const { data, error } = await supabase.auth.updateUser(accessToken, {
+            password: newPassword
+        });
+
+        if (error) {
+            console.error("Error updating password:", error);
+            return res.status(500).json({ message: 'Error updating password' });
+        }
+
+        return res.json({ message: 'Password updated successfully' });
+    } catch (error) {
+        console.error("Internal server error:", error);
+        return res.status(500).json({ message: 'Internal server error' });
+    }
+};
+
 
 export default auth

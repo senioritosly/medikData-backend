@@ -1,5 +1,4 @@
 import PdfPrinter from 'pdfmake';
-import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 

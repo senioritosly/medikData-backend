@@ -284,12 +284,13 @@ auth.updatePassword = async (req, res) => {
         if (!accessToken) {
             return res.status(400).json({ message: 'Access token is required' });
         }
+
         // Ensure that the refresh token is not empty
         if (!refreshToken) {
             return res.status(400).json({ message: 'Refresh token is required' });
         }
 
-        // Set session with supabase
+        // Set session with Supabase
         const { data: session, error: sessionError } = await supabase.auth.setSession({
             access_token: accessToken,
             refresh_token: refreshToken,
@@ -306,23 +307,15 @@ auth.updatePassword = async (req, res) => {
             return res.status(500).json({ message: 'Error setting session' });
         }
 
-        supabase.auth.onAuthStateChange((event, session) => {
-            console.log(event, session)
-            if (event === 'PASSWORD_RECOVERY') {
-                console.log('Password recovery', session)
-            }
-        })
-
         // Update the user's password
-        const { data, error } = await supabase.auth.updateUser({
+        const { data: updateData, error: updateError } = await supabase.auth.updateUser(accessToken, {
             password: newPassword
         });
 
-        if (error) {
-            console.error("Error updating password:", error);
+        if (updateError) {
+            console.error("Error updating password:", updateError);
 
-            // Check if it's an AuthSessionMissingError
-            if (error.message === 'Auth session missing') {
+            if (updateError.message === 'Auth session missing') {
                 return res.status(401).json({ message: 'Authentication session missing or expired' });
             }
 

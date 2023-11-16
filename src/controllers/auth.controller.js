@@ -273,7 +273,7 @@ auth.forgotPassword = async (req, res) => {
 
 auth.updatePassword = async (req, res) => {
     try {
-        const { accessToken, newPassword } = req.body;
+        const { access_token, newPassword } = req.body;
 
         // Ensure that the new password is not empty
         if (!newPassword) {
@@ -281,7 +281,7 @@ auth.updatePassword = async (req, res) => {
         }
 
         // Update the user's password
-        const { data, error } = await supabase.auth.updateUser(accessToken, {
+        const { data, error } = await supabase.auth.updateUser(access_token, {
             password: newPassword
         });
 

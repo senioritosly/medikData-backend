@@ -79,7 +79,7 @@ medicosController.getMedicosClinicas = async (req, res) => {
         // Paso 3: Obtener los médicos de la misma clínica
         const { data, error } = await supabase
             .from('medico')
-            .select('full_name, especialidad')
+            .select('dpi, full_name, especialidad, numerocolegiado, correo')
             .eq('id_clinica', idClinica);
 
         if (error) {

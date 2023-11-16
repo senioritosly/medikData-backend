@@ -7,6 +7,9 @@ const router = Router()
 router.route('/citaspaciente/:pacientetoken')
     .get(listadoCitas.getCitas)
 
+router.route('/citasmedico/:medicotoken')
+    .get(listadoCitas.getCitasMedicos)
+
 router.route('/citaspendientes/:pacientetoken')
     .get(listadoCitas.getCitasPendientes)
 

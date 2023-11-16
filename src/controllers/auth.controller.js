@@ -275,18 +275,24 @@ auth.updatePassword = async (req, res) => {
     try {
         const { accessToken, newPassword } = req.body;
 
-        // Asegúrate de que la nueva contraseña no esté vacía
+        // Ensure that the new password is not empty
         if (!newPassword) {
             return res.status(400).json({ message: 'New password is required' });
         }
 
-        // Actualizar la contraseña del usuario
+        // Update the user's password
         const { data, error } = await supabase.auth.updateUser(accessToken, {
             password: newPassword
         });
 
         if (error) {
             console.error("Error updating password:", error);
+
+            // Check if it's an AuthSessionMissingError
+            if (error.message === 'Auth session missing') {
+                return res.status(401).json({ message: 'Authentication session missing or expired' });
+            }
+
             return res.status(500).json({ message: 'Error updating password' });
         }
 

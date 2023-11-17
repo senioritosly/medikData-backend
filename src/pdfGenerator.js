@@ -15,7 +15,7 @@ function crearPDF(datos) {
         }
     };
 
-    const printer = new PdfPrinter(fonts);
+    const pdfPrinter = new PdfPrinter(fonts);
 
     const docDefinition = {
         content: [
@@ -56,21 +56,20 @@ function crearPDF(datos) {
             header: {
                 fontSize: 18,
                 bold: true,
-                alignment: 'center'
+                alignment: 'center',
+                color: '#06316B'
             },
             subheader: {
                 fontSize: 15,
-                bold: true
+                bold: true,
+                color: '#06316B'
             }
         }
     };
 
-    const pdfPrinter = new PdfPrinter(fonts);
     const pdfDoc = pdfPrinter.createPdfKitDocument(docDefinition);
 
-    // No escribe el PDF en el sistema de archivos, solo devuelve el stream
     return pdfDoc;
 }
 
-
-export  default crearPDF
+export default crearPDF;

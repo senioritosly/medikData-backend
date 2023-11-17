@@ -42,11 +42,11 @@ auth.signUp = async (req, res) => {
         }
 
         if (existingEmailUser.length > 0 && existingDpiUser.length > 0) {
-            return res.status(409).json({ message: 'Both email and DPI already exist' });
+            return res.status(409).json({ message: 'El DPI y el correo ya están en uso' });
         } else if (existingEmailUser.length > 0) {
-            return res.status(409).json({ message: 'Email already exists' });
+            return res.status(409).json({ message: 'Correo ya en uso' });
         } else if (existingDpiUser.length > 0) {
-            return res.status(409).json({ message: 'DPI already exists' });
+            return res.status(409).json({ message: 'DPI ya en uso' });
         }
 
         if (req.body.profile_role === "paciente") {
@@ -104,14 +104,14 @@ auth.signUp = async (req, res) => {
 
         if (error) {
             console.log(error);
-            return res.status(500).json({ message: 'Error creating user' });
+            return res.status(500).json({ message: 'Error creando usuario' });
         }
 
         return res.json({ message: 'Usuario creado correctamente', data });
 
     } catch (error) {
         console.log(error);
-        return res.status(500).json({ message: 'Error creating user' });
+        return res.status(500).json({ message: 'Error creando usuario' });
     }
 };
 

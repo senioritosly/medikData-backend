@@ -1,15 +1,19 @@
 import app from "./app.js"
 import dotenv from 'dotenv'
 import cron from 'node-cron';
-import { updateAppointmentsStatus } from './scheduledTasks.js';
+import { updateAppointmentsStatus, checkAndUpdateAvailability } from './scheduledTasks.js';
 dotenv.config();
 
-console.log('Ejecutando la tarea de actualización de citas al iniciar la aplicación');
+console.log('Ejecutando las tareas programadas al iniciar el servidor');
 updateAppointmentsStatus();
+checkAndUpdateAvailability();
+
 
 cron.schedule('0 * * * *', () => {
     console.log('Actualizando citas cada hora en punto');
     scheduledTasks.updateAppointmentsStatus();
+    console.log('Actualizando disponibilidad cada hora en punto');
+    scheduledTasks.checkAndUpdateAvailability();
 });
 
 const port = process.env.PORT || 8080;

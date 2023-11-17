@@ -107,7 +107,6 @@ listadoCitas.getCitasPendientesCitaID = async (req, res) => {
             .from('cita')
             .select('citasid, paciente(full_name), medico(full_name), clinica(nombre), fecha, hora, estado')
             .eq('citasid', req.params.citaid)
-            .eq('estado', 'pendiente');
 
 
         if (error) {

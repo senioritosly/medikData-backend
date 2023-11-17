@@ -283,61 +283,6 @@ listadoCitas.getCitasPorPacienteYMedico = async (req, res) => {
     }
 };
 
-//listadoCitas.getCitaPendiente = async (req, res) => {
-//    try {
-//        const pacienteToken = req.params.pacientetoken;
-//
-//        // Paso 1: Obtener citas pendientes del paciente
-//        const { data: citasData, error: citasError } = await supabase
-//            .from('cita')
-//            .select('medicotoken, clinicatoken, fecha, hora, estado')
-//            .eq('pacientetoken', pacienteToken)
-//            .eq('estado', 'pendiente');
-//
-//        if (citasError) {
-//            console.log(citasError);
-//            return res.status(500).json({ error: 'Error al obtener citas pendientes' });
-//        }
-//
-//        if (!citasData || citasData.length === 0) {
-//            return res.status(404).json({ error: 'No se encontraron citas pendientes' });
-//        }
-//
-//        // Paso 2: Obtener información de médicos y clínicas
-//        let citasDetalladas = [];
-//        for (const cita of citasData) {
-//            const { data: medicoData, error: medicoError } = await supabase
-//                .from('medico')
-//                .select('full_name')
-//                .eq('dpi', cita.medicotoken);
-//
-//            const { data: clinicaData, error: clinicaError } = await supabase
-//                .from('clinica')
-//                .select('nombre')
-//                .eq('id_clinica', cita.clinicatoken);
-//
-//            if (medicoError || clinicaError) {
-//                continue; // Continuar con la siguiente cita en caso de error
-//            }
-//
-//            if (medicoData && clinicaData) {
-//                citasDetalladas.push({
-//                    medico: medicoData[0].full_name,
-//                    clinica: clinicaData[0].nombre,
-//                    fecha: cita.fecha,
-//                    hora: cita.hora,
-//                    estado: cita.estado
-//                });
-//            }
-//        }
-//
-//        return res.json({ citasPendientes: citasDetalladas });
-//    } catch (error) {
-//        console.log(error);
-//        return res.status(500).json({ error: 'Error en el servidor' });
-//    }
-//};
-
 listadoCitas.getCitaCompleta = async (req, res) => {
     try {
         // Obtener información de la cita

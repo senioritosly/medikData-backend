@@ -124,8 +124,11 @@ auth.signIn = async (req, res) => {
         });
 
         if (error) {
-            console.log(error);
-            return res.status(401).json({ message: 'Invalid email or password' });
+            if (error.message === 'Invalid login credentials') {
+                return res.status(401).json({ message: 'Correo o contraseña incorrectos' });
+            } else if (error.message === 'Email not confirmed') {
+                return res.status(401).json({ message: 'Email no verificado' });
+            }
         }
 
         return res.json({ message: 'Login successful', data });

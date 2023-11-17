@@ -176,8 +176,7 @@ listadoCitas.getClinicaDeCitaPendiente = async (req, res) => {
         const { data: citasPendientes, error: errorCitas } = await supabase
             .from('cita')
             .select('clinicatoken')
-            .eq('pacientetoken', req.params.pacientetoken)
-            .eq('estado', 'pendiente');
+            .eq('pacientetoken', req.params.pacientetoken);
 
         if (errorCitas) {
             console.log(errorCitas);
@@ -216,8 +215,7 @@ listadoCitas.getDoctoresConCitasPendientes = async (req, res) => {
             .from('cita')
             .select('medicotoken')
             .eq('clinicatoken', clinicatoken)
-            .eq('pacientetoken', pacientetoken)
-            .eq('estado', 'pendiente');
+            .eq('pacientetoken', pacientetoken);
 
         if (errorCitas) {
             console.log(errorCitas);

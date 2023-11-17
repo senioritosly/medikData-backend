@@ -40,4 +40,7 @@ router.route('/citacompledata/:citasid')
 router.route('/citasPorPacienteYMedico/:pacientetoken/:medicotoken')
     .get(listadoCitas.getCitasPorPacienteYMedico)
 
+router.route('/citasPorPacienteYMedicoRealizadas/:pacientetoken/:medicotoken')
+    .get(listadoCitas.getCitasPorPacienteYMedicoRealizadas)
+
 export default router

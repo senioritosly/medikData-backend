@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - CI/CD
+      - develop
       
 jobs:
   build:

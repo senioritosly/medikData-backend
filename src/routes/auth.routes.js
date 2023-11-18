@@ -3,8 +3,8 @@ import auth from '../controllers/auth.controller.js'
 
 const router = Router()
 
-// router.route('/users/:email')
-//     .get(auth.getUserByEmail)
+router.route('/users/:email')
+    .get(auth.getUserByEmail)
 
 router.route('/login')
     .post(auth.signIn)
@@ -17,5 +17,15 @@ router.route('/user')
 
 router.route('/logout')
     .post(auth.logOut)
+
+router.route( '/updateprofile/:dpi/:fullname' )
+    .put( auth.updateUser )
+
+router.route('/recover')
+    .post(auth.forgotPassword)
+
+router.route('/reset')
+    .post(auth.updatePassword)
+
 
 export default router

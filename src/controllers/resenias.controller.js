@@ -7,8 +7,8 @@ reseniasConect.getResenias = async (req, res) => {
             .from('resenias')
             .select(`
             *,
-            medico:medico (nombres, apellidos, dpi),
-            paciente:autor (nombres, apellidos, dpi)
+            medico:medico (full_name, dpi),
+            paciente:autor (full_name, dpi)
         `);
 
         if (error) throw error;
@@ -20,8 +20,8 @@ reseniasConect.getResenias = async (req, res) => {
         // transformar las reseñas para que incluyan los nombres en lugar de las IDs
         resenias = resenias.map(resenia => ({
             ...resenia,
-            medico: `${resenia.medico.nombres} ${resenia.medico.apellidos}`,
-            paciente: `${resenia.paciente.nombres} ${resenia.paciente.apellidos}`
+            medico: `${resenia.medico.full_name}`,
+            paciente: `${resenia.paciente.full_name}`
         }));
 
         return res.json({ resenias });

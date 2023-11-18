@@ -51,10 +51,12 @@ addCitas.getEspecialidades = async (req, res) => {
 
 addCitas.getMedico = async (req, res) => {
     try {
+        
+        const especialidad = decodeURIComponent(req.params.especialidad.replace(/\+/g, ' '));
         const { data, error } = await supabase
             .from('medico')
-            .select('nombres, apellidos, dpi')
-            .eq('especialidad', req.params.especialidad)
+            .select('full_name, dpi')
+            .eq('especialidad', especialidad)
             .eq('id_clinica', req.params.id_clinica)
 
 
